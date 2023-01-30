@@ -2,28 +2,12 @@
   <div class="app">
     <AppNav />
     <AppMain />
+    <AppFooter />
   </div>
 </template>
 
 <script setup lang="ts">
 import AppNav from "@/components/AppNav.vue";
 import AppMain from "@/components/AppMain.vue";
+import AppFooter from "@/components/AppFooter.vue";
 </script>
-
-<style>
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-ul,
-ol,
-li {
-  list-style: none;
-}
-
-.app {
-  font-family: Arial, sans-serif;
-}
-</style>
