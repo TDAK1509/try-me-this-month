@@ -5,6 +5,11 @@
       <ul class="text-blue-500">
         <li v-for="link in links" class="ml-4 my-2 list-disc">
           <a href="link" class="underline">{{ link }}</a>
+          <button
+            class="ml-4 rotate-45 text-gray-700 text-2xl relative top-0.5 cursor-pointer"
+          >
+            +
+          </button>
         </li>
       </ul>
     </template>
