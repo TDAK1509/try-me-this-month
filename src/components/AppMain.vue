@@ -1,11 +1,19 @@
 <template>
-  <main>
-    <p class="text-3xl font-bold underline">Hello world!</p>
-
-    <ul>
-      <li>link 1</li>
-      <li>link 2</li>
-      <li>link 3</li>
-    </ul>
+  <main class="p-4">
+    <template v-for="(links, subName) in list">
+      <h4 class="font-bold mt-4 first:mt-0">{{ subName }}</h4>
+      <ul class="text-blue-500">
+        <li v-for="link in links" class="ml-4 my-2 list-disc">
+          <a href="link" class="underline">{{ link }}</a>
+        </li>
+      </ul>
+    </template>
   </main>
 </template>
+
+<script lang="ts" setup>
+const list = {
+  "Triệu Mẫn": ["link1", "link2", "link3"],
+  Sun: ["link3", "link4"],
+};
+</script>
