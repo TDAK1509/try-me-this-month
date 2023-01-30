@@ -4,7 +4,7 @@
       <li class="flex-1" v-for="category in categories" :key="category">
         <button
           class="w-full py-3 bg-gray-200"
-          :class="{ 'bg-black text-white': category === '2tr5' }"
+          :class="{ 'bg-gray-900 text-white': category === '2tr5' }"
         >
           {{ category }}
         </button>
