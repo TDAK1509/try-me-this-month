@@ -10,11 +10,17 @@ import AppNav from "@/components/AppNav.vue";
 import AppMain from "@/components/AppMain.vue";
 </script>
 
-<style scoped>
+<style>
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
 }
 
 .app {
