@@ -30,15 +30,28 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, inject } from "vue";
+import { collection, addDoc, Firestore } from "firebase/firestore";
 
+const db = inject("firebase");
 const inputClasses = "border border-gray-400 rounded px-2 py-1";
 
 const sub = ref("");
 const price = ref("");
 const link = ref("");
 
-function submit() {
+async function submit() {
   console.log("submit", sub.value, price.value, link.value);
+
+  try {
+    const docRef = await addDoc(collection(db as Firestore, "users"), {
+      first: "Ada",
+      last: "Lovelace",
+      born: 1815,
+    });
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
 }
 </script>
