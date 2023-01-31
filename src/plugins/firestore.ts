@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore"
-
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { Db } from "@/types/data.types";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAmftY35GwnoteVn_ixIRwbCWSrAJiSr3U",
@@ -12,5 +12,11 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const _db = getFirestore(app);
+const COLLECTION = "links";
 
-export const db = getFirestore(app);
+export const db: Db = {
+  add: (doc: object) => {
+    return addDoc(collection(_db, COLLECTION), doc);
+  },
+};

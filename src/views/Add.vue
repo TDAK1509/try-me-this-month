@@ -31,9 +31,9 @@
 
 <script lang="ts" setup>
 import { ref, inject } from "vue";
-import { collection, addDoc, Firestore } from "firebase/firestore";
+import { Db } from "@/types/data.types";
 
-const db = inject("firebase");
+const db: Db = inject("firebase") as Db;
 const inputClasses = "border border-gray-400 rounded px-2 py-1";
 
 const sub = ref("");
@@ -44,12 +44,13 @@ async function submit() {
   console.log("submit", sub.value, price.value, link.value);
 
   try {
-    const docRef = await addDoc(collection(db as Firestore, "users"), {
+    const doc = {
       first: "Ada",
       last: "Lovelace",
       born: 1815,
-    });
-    console.log("Document written with ID: ", docRef.id);
+    };
+    const docRef = await db.add(doc);
+    console.log("hoho", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);
   }
