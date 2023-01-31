@@ -41,16 +41,8 @@ const price = ref("");
 const link = ref("");
 
 async function submit() {
-  console.log("submit", sub.value, price.value, link.value);
-
   try {
-    const doc = {
-      first: "Ada",
-      last: "Lovelace",
-      born: 1815,
-    };
-    const docRef = await db.add(doc);
-    console.log("hoho", docRef.id);
+    await db.add(sub.value, price.value, link.value);
   } catch (e) {
     console.error("Error adding document: ", e);
   }
