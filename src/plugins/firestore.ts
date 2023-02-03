@@ -5,9 +5,11 @@ import {
   doc,
   updateDoc,
   arrayUnion,
+  collection,
+  getDocs,
 } from "firebase/firestore";
 import type { DocumentReference, DocumentData } from "firebase/firestore";
-import { Db, DbData } from "@/types/data.types";
+import { Db, DbData, SubsData } from "@/types/data.types";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAmftY35GwnoteVn_ixIRwbCWSrAJiSr3U",
@@ -34,6 +36,18 @@ export const db: Db = {
 
       throw e;
     }
+  },
+
+  fetch: async (): Promise<SubsData> => {
+    const querySnapshot = await getDocs(collection(_db, COLLECTION));
+
+    let result: SubsData = {};
+
+    querySnapshot.forEach(doc => {
+      result[doc.id] = doc.data();
+    });
+
+    return result;
   },
 };
 
