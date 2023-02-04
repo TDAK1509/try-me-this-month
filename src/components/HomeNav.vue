@@ -17,13 +17,17 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, inject } from "vue";
+import type { Ref } from "vue";
 import { Db, Price, SubsData } from "@/types/data.types";
 
 const db: Db = inject("firebase") as Db;
+const categories: Ref<Price[]> = ref([]);
+const currentCategory: Ref<Price> = ref("");
 
 onMounted(async () => {
   const l = await db.fetch();
-  console.log(extractCategoriesFromApiResponse(l));
+  categories.value = extractCategoriesFromApiResponse(l);
+  currentCategory.value = categories.value[0];
 });
 
 function extractCategoriesFromApiResponse(response: SubsData): Price[] {
@@ -36,7 +40,4 @@ function extractCategoriesFromApiResponse(response: SubsData): Price[] {
 
   return [...new Set(_categories)].sort();
 }
-
-const categories = ["This month", "2tr5", "3tr5"];
-const currentCategory = ref("2tr5");
 </script>
