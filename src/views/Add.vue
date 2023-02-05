@@ -22,9 +22,17 @@
         <option v-for="p in priceList" :key="p" :value="p"></option>
       </datalist>
 
-      <label class="block mt-4">
+      <label class="block mt-4 relative">
         Link: <br />
+
         <input v-model="link" type="text" :class="inputClasses" />
+        <button
+          type="button"
+          class="ml-2 rotate-45 text-gray-700 text-2xl absolute bottom-0.5 cursor-pointer"
+          @click="clearLink"
+        >
+          +
+        </button>
       </label>
 
       <button
@@ -81,5 +89,9 @@ async function submit() {
   } finally {
     isAdding.value = false;
   }
+}
+
+function clearLink() {
+  link.value = "";
 }
 </script>
