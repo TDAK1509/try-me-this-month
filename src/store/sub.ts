@@ -1,7 +1,7 @@
 import { computed, ref } from "vue";
 import { createGlobalState } from "@vueuse/core";
 import type { Ref, ComputedRef } from "vue";
-import { Db, Price, SubsData } from "@/types/data.types";
+import { Db, Link, Price, SubName, SubsData } from "@/types/data.types";
 import { db } from "@/plugins/firestore";
 
 export const useSub = createGlobalState(() => {
@@ -11,11 +11,15 @@ export const useSub = createGlobalState(() => {
     data.value = await db.fetch();
   }
 
+  async function add(subName: SubName, price: Price, link: Link) {
+    return db.add(subName, price, link);
+  }
+
   const priceList: ComputedRef<Price[]> = computed(() =>
     extractCategoriesFromApiResponse(data.value)
   );
 
-  return { priceList, fetch };
+  return { priceList, fetch, add };
 });
 
 function extractCategoriesFromApiResponse(response: SubsData | null): Price[] {

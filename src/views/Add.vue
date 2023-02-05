@@ -30,10 +30,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject } from "vue";
-import { Db } from "@/types/data.types";
+import { ref } from "vue";
+import { useSub } from "@/store/sub";
 
-const db: Db = inject("firebase") as Db;
+const { add } = useSub();
+
 const inputClasses = "border border-gray-400 rounded px-2 py-1";
 
 const sub = ref("");
@@ -42,7 +43,7 @@ const link = ref("");
 
 async function submit() {
   try {
-    await db.add(sub.value, price.value, link.value);
+    await add(sub.value, price.value, link.value);
   } catch (e) {
     console.error("Error adding document: ", e);
   }
