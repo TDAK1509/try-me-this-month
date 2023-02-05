@@ -10,3 +10,4 @@ export type DbData = Record<Price, Link[]>;
 
 export type SubName = string;
 export type SubsData = Record<SubName, DbData>;
+export type SubsDataByPrice = Record<SubName, Link[]>;

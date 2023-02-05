@@ -1,7 +1,13 @@
 import { computed, ref } from "vue";
 import { createGlobalState } from "@vueuse/core";
 import type { Ref, ComputedRef } from "vue";
-import { Link, Price, SubName, SubsData } from "@/types/data.types";
+import {
+  Link,
+  Price,
+  SubName,
+  SubsData,
+  SubsDataByPrice,
+} from "@/types/data.types";
 import { db } from "@/db/firestore";
 
 export const useSub = createGlobalState(() => {
@@ -19,7 +25,17 @@ export const useSub = createGlobalState(() => {
     extractCategoriesFromApiResponse(data.value)
   );
 
-  return { priceList, fetch, add };
+  function getLinksByPrice(price: Price): SubsDataByPrice {
+    let links: SubsDataByPrice = {};
+
+    for (const subName in data.value) {
+      links[subName] = data.value[subName][price];
+    }
+
+    return links;
+  }
+
+  return { getLinksByPrice, priceList, fetch, add };
 });
 
 function extractCategoriesFromApiResponse(response: SubsData | null): Price[] {
