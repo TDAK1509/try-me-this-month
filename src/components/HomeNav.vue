@@ -1,12 +1,12 @@
 <template>
   <nav class="nav">
     <ul class="flex text-center">
-      <li class="flex-1" v-for="category in categories" :key="category">
+      <li class="flex-1" v-for="category in priceList" :key="category">
         <button
           class="w-full py-3 bg-gray-200"
-          :class="{ 'bg-gray-900 text-white': category === currentCategory }"
-          :disabled="category === currentCategory"
-          @click="currentCategory = category"
+          :class="{ 'bg-gray-900 text-white': category === selectedPrice }"
+          :disabled="category === selectedPrice"
+          @click="selectedPrice = category"
         >
           {{ category }}
         </button>
@@ -16,28 +16,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, inject } from "vue";
+import { ref, onMounted } from "vue";
 import type { Ref } from "vue";
-import { Db, Price, SubsData } from "@/types/data.types";
+import { Price } from "@/types/data.types";
+import { useSub } from "@/store/sub";
 
-const db: Db = inject("firebase") as Db;
-const categories: Ref<Price[]> = ref([]);
-const currentCategory: Ref<Price> = ref("");
+const { priceList, fetch } = useSub();
+
+const selectedPrice: Ref<Price> = ref("");
 
 onMounted(async () => {
-  const l = await db.fetch();
-  categories.value = extractCategoriesFromApiResponse(l);
-  currentCategory.value = categories.value[0];
+  await fetch();
+  selectedPrice.value = priceList.value.length > 0 ? priceList.value[0] : "";
 });
-
-function extractCategoriesFromApiResponse(response: SubsData): Price[] {
-  const _categories: Price[] = [];
-
-  for (const sub in response) {
-    const pricesInThisSub: Price[] = Object.keys(response[sub]);
-    _categories.push(...pricesInThisSub);
-  }
-
-  return [...new Set(_categories)].sort();
-}
 </script>

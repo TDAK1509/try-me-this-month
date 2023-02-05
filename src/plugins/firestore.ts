@@ -9,7 +9,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import type { DocumentReference, DocumentData } from "firebase/firestore";
-import { Db, DbData, SubsData } from "@/types/data.types";
+import { Db, SubsData } from "@/types/data.types";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAmftY35GwnoteVn_ixIRwbCWSrAJiSr3U",
