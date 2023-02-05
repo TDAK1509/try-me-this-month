@@ -5,7 +5,7 @@
       <ul class="list-disc text-blue-500">
         <TransitionGroup name="list">
           <li v-for="link in links" :key="link" class="ml-4 my-2">
-            <a href="link" target="_blank" class="underline">{{ link }}</a>
+            <a :href="link" target="_blank" class="underline">{{ link }}</a>
             <button
               class="ml-4 rotate-45 text-gray-700 text-2xl relative top-0.5 cursor-pointer"
               :disabled="isDeleting"
