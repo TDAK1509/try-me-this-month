@@ -5,11 +5,12 @@ import {
   doc,
   updateDoc,
   arrayUnion,
+  arrayRemove,
   collection,
   getDocs,
 } from "firebase/firestore";
 import type { DocumentReference, DocumentData } from "firebase/firestore";
-import { Db, SubsData } from "@/types/data.types";
+import { Db, Link, Price, SubName, SubsData } from "@/types/data.types";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAmftY35GwnoteVn_ixIRwbCWSrAJiSr3U",
@@ -25,7 +26,7 @@ const _db = getFirestore(app);
 const COLLECTION = "links";
 
 export const db: Db = {
-  add: async (sub: string, price: string, link: string) => {
+  add: async (sub: SubName, price: Price, link: Link) => {
     try {
       await updateData(sub, price, link);
     } catch (e) {
@@ -49,9 +50,17 @@ export const db: Db = {
 
     return result;
   },
+
+  remove: async (sub: SubName, price: Price, link: Link) => {
+    const ref = getRefByDocId(sub);
+
+    return updateDoc(ref, {
+      [price]: arrayRemove(link),
+    });
+  },
 };
 
-async function addNewData(sub: string, price: string, link: string) {
+async function addNewData(sub: SubName, price: Price, link: Link) {
   const ref = getRefByDocId(sub);
 
   return setDoc(ref, {
@@ -59,7 +68,7 @@ async function addNewData(sub: string, price: string, link: string) {
   });
 }
 
-async function updateData(sub: string, price: string, link: string) {
+async function updateData(sub: SubName, price: Price, link: Link) {
   const ref = getRefByDocId(sub);
 
   return updateDoc(ref, {

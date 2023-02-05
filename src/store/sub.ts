@@ -26,6 +26,10 @@ export const useSub = createGlobalState(() => {
     return db.add(subName, price, link);
   }
 
+  async function remove(subName: SubName, price: Price, link: Link) {
+    return db.remove(subName, price, link);
+  }
+
   const priceList: ComputedRef<Price[]> = computed(() =>
     extractCategoriesFromApiResponse(data.value)
   );
@@ -46,6 +50,7 @@ export const useSub = createGlobalState(() => {
     priceList,
     fetch,
     add,
+    remove,
     setSelectedPrice,
   };
 });
