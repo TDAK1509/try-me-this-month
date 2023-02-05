@@ -2,7 +2,7 @@
   <nav class="nav">
     <ul class="flex text-center overflow-x-auto">
       <li
-        class="basis-28 shrink-0"
+        class="basis-28 shrink-0 border border-y-0 border-x-gray-300"
         v-for="category in priceList"
         :key="category"
       >
