@@ -12,6 +12,11 @@ import { db } from "@/db/firestore";
 
 export const useSub = createGlobalState(() => {
   const data: Ref<SubsData | null> = ref(null);
+  const selectedPrice: Ref<Price> = ref("");
+
+  function setSelectedPrice(newPrice: Price) {
+    selectedPrice.value = newPrice;
+  }
 
   async function fetch() {
     data.value = await db.fetch();
@@ -35,7 +40,14 @@ export const useSub = createGlobalState(() => {
     return links;
   }
 
-  return { getLinksByPrice, priceList, fetch, add };
+  return {
+    selectedPrice,
+    priceList,
+    fetch,
+    add,
+    getLinksByPrice,
+    setSelectedPrice,
+  };
 });
 
 function extractCategoriesFromApiResponse(response: SubsData | null): Price[] {

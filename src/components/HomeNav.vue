@@ -6,7 +6,7 @@
           class="w-full py-3 bg-gray-200"
           :class="{ 'bg-gray-900 text-white': category === selectedPrice }"
           :disabled="category === selectedPrice"
-          @click="selectedPrice = category"
+          @click="setSelectedPrice(category)"
         >
           {{ category }}
         </button>
@@ -16,14 +16,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-import type { Ref } from "vue";
-import { Price } from "@/types/data.types";
+import { onMounted } from "vue";
 import { useSub } from "@/store/sub";
 
-const { priceList } = useSub();
+const { selectedPrice, priceList, setSelectedPrice } = useSub();
 
-const selectedPrice: Ref<Price> = ref(
-  priceList.value.length > 0 ? priceList.value[0] : ""
-);
+onMounted(() => {
+  setSelectedPrice(priceList.value.length > 0 ? priceList.value[0] : "");
+});
 </script>
