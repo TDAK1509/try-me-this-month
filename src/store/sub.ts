@@ -30,22 +30,22 @@ export const useSub = createGlobalState(() => {
     extractCategoriesFromApiResponse(data.value)
   );
 
-  function getLinksByPrice(price: Price): SubsDataByPrice {
+  const selectedPriceLinks: ComputedRef<SubsDataByPrice> = computed(() => {
     let links: SubsDataByPrice = {};
 
     for (const subName in data.value) {
-      links[subName] = data.value[subName][price];
+      links[subName] = data.value[subName][selectedPrice.value];
     }
 
     return links;
-  }
+  });
 
   return {
     selectedPrice,
+    selectedPriceLinks,
     priceList,
     fetch,
     add,
-    getLinksByPrice,
     setSelectedPrice,
   };
 });

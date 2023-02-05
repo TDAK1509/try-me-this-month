@@ -1,6 +1,6 @@
 <template>
   <main class="p-4">
-    <template v-for="(links, subName) in subData">
+    <template v-for="(links, subName) in selectedPriceLinks">
       <h4 class="font-bold mt-4 first:mt-0">{{ subName }}</h4>
       <ul class="list-disc text-blue-500">
         <li v-for="link in links" class="ml-4 my-2">
@@ -17,16 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
-import type { Ref } from "vue";
 import { useSub } from "@/store/sub";
-import { SubsDataByPrice } from "@/types/data.types";
 
-const { getLinksByPrice } = useSub();
-
-const subData: Ref<SubsDataByPrice> = ref({});
-
-onMounted(() => {
-  subData.value = getLinksByPrice("4tr");
-});
+const { selectedPriceLinks } = useSub();
 </script>
