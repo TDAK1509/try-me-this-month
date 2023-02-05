@@ -93,5 +93,6 @@ async function submit() {
 
 function clearLink() {
   link.value = "";
+  shouldShowSuccessMessage.value = false;
 }
 </script>
