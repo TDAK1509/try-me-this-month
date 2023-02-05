@@ -16,17 +16,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import type { Ref } from "vue";
 import { Price } from "@/types/data.types";
 import { useSub } from "@/store/sub";
 
-const { priceList, fetch } = useSub();
+const { priceList } = useSub();
 
-const selectedPrice: Ref<Price> = ref("");
-
-onMounted(async () => {
-  await fetch();
-  selectedPrice.value = priceList.value.length > 0 ? priceList.value[0] : "";
-});
+const selectedPrice: Ref<Price> = ref(
+  priceList.value.length > 0 ? priceList.value[0] : ""
+);
 </script>
