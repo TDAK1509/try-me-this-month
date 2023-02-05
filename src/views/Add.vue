@@ -29,6 +29,7 @@
 
       <button
         class="bg-black text-white px-6 py-2 rounded mt-6 w-full cursor-pointer"
+        :disabled="isAdding"
       >
         <Loader v-if="isAdding" />
         <span v-else>Add</span>
