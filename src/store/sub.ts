@@ -1,8 +1,8 @@
 import { computed, ref } from "vue";
 import { createGlobalState } from "@vueuse/core";
 import type { Ref, ComputedRef } from "vue";
-import { Db, Link, Price, SubName, SubsData } from "@/types/data.types";
-import { db } from "@/plugins/firestore";
+import { Link, Price, SubName, SubsData } from "@/types/data.types";
+import { db } from "@/db/firestore";
 
 export const useSub = createGlobalState(() => {
   const data: Ref<SubsData | null> = ref(null);
