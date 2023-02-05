@@ -25,7 +25,7 @@ import { useSub } from "@/store/sub";
 import { Link, SubName } from "@/types/data.types";
 import Loader from "./Loader.vue";
 
-const { selectedPrice, selectedPriceLinks, remove, fetch } = useSub();
+const { subData, selectedPrice, selectedPriceLinks, remove, fetch } = useSub();
 const isDeleting = ref(false);
 const linkBeingDeleted = ref("");
 
@@ -33,8 +33,8 @@ async function removeLink(subName: SubName, link: Link) {
   try {
     isDeleting.value = true;
     linkBeingDeleted.value = link;
-    await remove(subName, selectedPrice.value, link);
-    await fetch();
+    // await remove(subName, selectedPrice.value, link);
+    removeLinkInUi(subName, link);
   } catch (e: unknown) {
     if (e instanceof Error) alert(e.message);
     alert(e);
@@ -42,5 +42,12 @@ async function removeLink(subName: SubName, link: Link) {
     isDeleting.value = false;
     linkBeingDeleted.value = "";
   }
+}
+
+function removeLinkInUi(subName: SubName, link: Link) {
+  // @ts-ignore
+  subData.value[subName][selectedPrice.value] = subData.value[subName][
+    selectedPrice.value
+  ].filter((l: Link) => l !== link);
 }
 </script>
