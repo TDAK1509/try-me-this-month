@@ -3,13 +3,24 @@
     <form @submit.prevent="submit">
       <label>
         Sub: <br />
-        <input v-model="sub" type="text" :class="inputClasses" />
+        <input v-model="sub" list="subs" type="text" :class="inputClasses" />
       </label>
+      <datalist id="subs">
+        <option v-for="s in subList" :key="s" :value="s"></option>
+      </datalist>
 
       <label class="block mt-4">
         Price: <br />
-        <input v-model="price" type="text" :class="inputClasses" />
+        <input
+          v-model="price"
+          list="prices"
+          type="text"
+          :class="inputClasses"
+        />
       </label>
+      <datalist id="prices">
+        <option v-for="p in priceList" :key="p" :value="p"></option>
+      </datalist>
 
       <label class="block mt-4">
         Link: <br />
@@ -19,7 +30,7 @@
       <button
         class="bg-black text-white px-6 py-2 rounded mt-6 w-full cursor-pointer"
       >
-        <Loader v-if="loading" />
+        <Loader v-if="isAdding" />
         <span v-else>Add</span>
       </button>
 
@@ -35,11 +46,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import Loader from "@/components/Loader.vue";
 import { useSub } from "@/store/sub";
 
-const { add } = useSub();
+const { subData, subList, priceList, add, fetch } = useSub();
 
 const inputClasses = "border border-gray-400 rounded px-2 py-1";
 
@@ -47,19 +58,27 @@ const sub = ref("");
 const price = ref("");
 const link = ref("");
 
-const loading = ref(false);
+const loading = ref(true);
+const isAdding = ref(false);
 const shouldShowSuccessMessage = ref(false);
+
+onMounted(async () => {
+  if (subData.value === null) {
+    await fetch();
+  }
+  loading.value = false;
+});
 
 async function submit() {
   try {
-    loading.value = true;
+    isAdding.value = true;
     shouldShowSuccessMessage.value = false;
     await add(sub.value, price.value, link.value);
     shouldShowSuccessMessage.value = true;
   } catch (e) {
     console.error("Error adding document: ", e);
   } finally {
-    loading.value = false;
+    isAdding.value = false;
   }
 }
 </script>

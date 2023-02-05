@@ -11,7 +11,7 @@ import {
 import { db } from "@/db/firestore";
 
 export const useSub = createGlobalState(() => {
-  const data: Ref<SubsData | null> = ref(null);
+  const subData: Ref<SubsData | null> = ref(null);
   const selectedPrice: Ref<Price> = ref("");
 
   function setSelectedPrice(newPrice: Price) {
@@ -19,7 +19,7 @@ export const useSub = createGlobalState(() => {
   }
 
   async function fetch() {
-    data.value = await db.fetch();
+    subData.value = await db.fetch();
   }
 
   async function add(subName: SubName, price: Price, link: Link) {
@@ -31,22 +31,28 @@ export const useSub = createGlobalState(() => {
   }
 
   const priceList: ComputedRef<Price[]> = computed(() =>
-    extractCategoriesFromApiResponse(data.value)
+    extractCategoriesFromApiResponse(subData.value)
   );
 
   const selectedPriceLinks: ComputedRef<SubsDataByPrice> = computed(() => {
     let links: SubsDataByPrice = {};
 
-    for (const subName in data.value) {
-      links[subName] = data.value[subName][selectedPrice.value];
+    for (const subName in subData.value) {
+      links[subName] = subData.value[subName][selectedPrice.value];
     }
 
     return links;
   });
 
+  const subList: ComputedRef<SubName[]> = computed(() =>
+    subData.value ? Object.keys(subData.value) : []
+  );
+
   return {
+    subData,
     selectedPrice,
     selectedPriceLinks,
+    subList,
     priceList,
     fetch,
     add,
