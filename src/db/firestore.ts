@@ -8,6 +8,7 @@ import {
   arrayRemove,
   collection,
   getDocs,
+  getDoc,
 } from "firebase/firestore";
 import type { DocumentReference, DocumentData } from "firebase/firestore";
 import { Db, Link, Price, SubName, SubsData } from "@/types/data.types";
@@ -71,16 +72,14 @@ export const db: Db = {
   },
 
   fetchFavorites: async (): Promise<string[]> => {
-    return ["link 1", "https://t.me/c/1616359034/4518"];
-    // const querySnapshot = await getDocs(collection(_db, COLLECTION_FAVORITE));
+    const docRef = doc(_db, COLLECTION_FAVORITE, "favorites");
+    const docSnap = await getDoc(docRef);
 
-    // let result: SubsData = {};
-
-    // querySnapshot.forEach(doc => {
-    //   result[doc.id] = doc.data();
-    // });
-
-    // return result;
+    if (docSnap.exists()) {
+      return docSnap.data().links;
+    } else {
+      return [];
+    }
   },
 };
 
