@@ -13,6 +13,7 @@ import { db } from "@/db/firestore";
 export const useSub = createGlobalState(() => {
   const subData: Ref<SubsData | null> = ref(null);
   const selectedPrice: Ref<Price> = ref("");
+  const favorites: Ref<string[]> = ref([]);
 
   function setSelectedPrice(newPrice: Price) {
     selectedPrice.value = newPrice;
@@ -48,13 +49,19 @@ export const useSub = createGlobalState(() => {
     subData.value ? Object.keys(subData.value) : []
   );
 
+  async function fetchFavorites() {
+    favorites.value = await db.fetchFavorites();
+  }
+
   return {
     subData,
     selectedPrice,
     selectedPriceLinks,
     subList,
     priceList,
+    favorites,
     fetch,
+    fetchFavorites,
     add,
     remove,
     setSelectedPrice,

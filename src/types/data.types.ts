@@ -2,6 +2,8 @@ export interface Db {
   add: (sub: SubName, price: Price, link: Link) => Promise<void>;
   fetch: () => Promise<SubsData>;
   remove: (subName: SubName, price: Price, link: Link) => Promise<void>;
+
+  fetchFavorites: () => Promise<string[]>;
 }
 
 export type Price = string;

@@ -20,7 +20,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const _db = getFirestore(app);
-const COLLECTION = "links";
+const COLLECTION_LINKS = "links";
+const COLLECTION_FAVORITE = "favorites";
 
 export const db: Db = {
   add: async (sub: SubName, price: Price, link: Link) => {
@@ -37,7 +38,7 @@ export const db: Db = {
   },
 
   fetch: async (): Promise<SubsData> => {
-    const querySnapshot = await getDocs(collection(_db, COLLECTION));
+    const querySnapshot = await getDocs(collection(_db, COLLECTION_LINKS));
 
     let result: SubsData = {};
 
@@ -54,6 +55,19 @@ export const db: Db = {
     return updateDoc(ref, {
       [price]: arrayRemove(link),
     });
+  },
+
+  fetchFavorites: async (): Promise<string[]> => {
+    return ["link 1", "link 2"];
+    // const querySnapshot = await getDocs(collection(_db, COLLECTION_FAVORITE));
+
+    // let result: SubsData = {};
+
+    // querySnapshot.forEach(doc => {
+    //   result[doc.id] = doc.data();
+    // });
+
+    // return result;
   },
 };
 
@@ -74,5 +88,5 @@ async function updateData(sub: SubName, price: Price, link: Link) {
 }
 
 function getRefByDocId(docId: string): DocumentReference<DocumentData> {
-  return doc(_db, COLLECTION, docId);
+  return doc(_db, COLLECTION_LINKS, docId);
 }
