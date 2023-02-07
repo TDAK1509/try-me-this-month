@@ -71,6 +71,10 @@ export const db: Db = {
     }
   },
 
+  removeFavorite: async (link: Link) => {
+    return removeFavorite(link);
+  },
+
   fetchFavorites: async (): Promise<string[]> => {
     const docRef = doc(_db, COLLECTION_FAVORITE, "favorites");
     const docSnap = await getDoc(docRef);
@@ -116,5 +120,13 @@ async function updateFavorite(favorite: Link) {
 
   return updateDoc(ref, {
     links: arrayUnion(favorite),
+  });
+}
+
+async function removeFavorite(favorite: Link) {
+  const ref = doc(_db, COLLECTION_FAVORITE, "favorites");
+
+  return updateDoc(ref, {
+    links: arrayRemove(favorite),
   });
 }

@@ -23,6 +23,7 @@
             >
               <Loader
                 v-if="isAddingToFavorite && link === linkBeingAddedToFavorite"
+                class="w-3 h-3"
               />
               <HeartButton
                 v-else
@@ -51,6 +52,7 @@ const {
   remove,
   addFavorite,
   fetchFavorites,
+  removeFavorite,
 } = useSub();
 const isDeleting = ref(false);
 const linkBeingDeleted = ref("");
@@ -89,7 +91,12 @@ async function onClickHeartButton(link: Link) {
   try {
     isAddingToFavorite.value = true;
     linkBeingAddedToFavorite.value = link;
-    await addFavorite(link);
+    if (!favorites.value.includes(link)) {
+      await addFavorite(link);
+    } else {
+      await removeFavorite(link);
+    }
+
     await fetchFavorites();
   } catch (e: unknown) {
     if (e instanceof Error) alert(e.message);

@@ -57,6 +57,10 @@ export const useSub = createGlobalState(() => {
     return db.addFavorite(link);
   }
 
+  async function removeFavorite(link: Link) {
+    return db.removeFavorite(link);
+  }
+
   return {
     subData,
     selectedPrice,
@@ -68,6 +72,7 @@ export const useSub = createGlobalState(() => {
     fetchFavorites,
     add,
     addFavorite,
+    removeFavorite,
     remove,
     setSelectedPrice,
   };

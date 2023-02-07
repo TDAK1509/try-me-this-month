@@ -5,6 +5,7 @@ export interface Db {
 
   fetchFavorites: () => Promise<string[]>;
   addFavorite: (link: Link) => Promise<void>;
+  removeFavorite: (link: Link) => Promise<void>;
 }
 
 export type Price = string;
