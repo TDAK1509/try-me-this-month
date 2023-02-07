@@ -6,9 +6,27 @@
     <Loader class="w-24 h-24" />
   </div>
 
-  <div v-else>
-    <ul>
-      <li v-for="favorite in favorites" :key="favorite">{{ favorite }}</li>
+  <div v-else class="p-4">
+    <nav class="flex gap-4">
+      <RouterLink
+        class="flex justify-center items-center font-bold mb-4 bg-black text-white rounded p-2 w-24"
+        to="/"
+      >
+        Go back
+      </RouterLink>
+
+      <button
+        class="flex justify-center items-center font-bold mb-4 bg-black text-white rounded p-2 w-24"
+        @click="copy"
+      >
+        Copy
+      </button>
+    </nav>
+
+    <ul class="ml-4 list-disc text-blue-500">
+      <li v-for="link in favorites" :key="link" class="mb-2">
+        <a :href="link" target="_blank" class="underline">{{ link }}</a>
+      </li>
     </ul>
   </div>
 </template>
@@ -26,4 +44,13 @@ onMounted(async () => {
   await fetchFavorites();
   loading.value = false;
 });
+
+function copy() {
+  const text = favorites.value.join("\n\n");
+  copyToClipboard(text);
+}
+
+function copyToClipboard(text: string) {
+  navigator.clipboard.writeText(text);
+}
 </script>
