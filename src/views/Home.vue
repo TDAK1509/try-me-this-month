@@ -16,7 +16,7 @@ import HomeFooter from "@/components/HomeFooter.vue";
 
 import { useSub } from "@/store/sub";
 
-const { fetch } = useSub();
+const { fetch, fetchFavorites } = useSub();
 const loaded = ref(false);
 
 onMounted(async () => {

@@ -1,6 +1,7 @@
 <template>
   <main class="p-4">
-    <template v-for="(links, subName) in selectedPriceLinks">
+    <Loader v-if="loading" />
+    <template v-else v-for="(links, subName) in selectedPriceLinks">
       <h4 class="font-bold mt-4 first:mt-0">{{ subName }}</h4>
       <ul class="list-disc text-blue-500">
         <TransitionGroup name="list">
@@ -14,6 +15,20 @@
               <Loader v-if="isDeleting && link === linkBeingDeleted" />
               <span v-else>+</span>
             </button>
+
+            <button
+              class="w-3 h-3 ml-4 cursor-pointer"
+              :disabled="isAddingToFavorite"
+              @click="onClickHeartButton(link)"
+            >
+              <Loader
+                v-if="isAddingToFavorite && link === linkBeingAddedToFavorite"
+              />
+              <HeartButton
+                v-else
+                :color="favorites.includes(link) ? 'red' : '#ccc'"
+              />
+            </button>
           </li>
         </TransitionGroup>
       </ul>
@@ -22,14 +37,31 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useSub } from "@/store/sub";
 import { Link, SubName } from "@/types/data.types";
 import Loader from "./Loader.vue";
+import HeartButton from "./HeartButton.vue";
 
-const { subData, selectedPrice, selectedPriceLinks, remove, fetch } = useSub();
+const {
+  subData,
+  selectedPrice,
+  selectedPriceLinks,
+  favorites,
+  remove,
+  addFavorite,
+  fetchFavorites,
+} = useSub();
 const isDeleting = ref(false);
 const linkBeingDeleted = ref("");
+const loading = ref(true);
+const isAddingToFavorite = ref(false);
+const linkBeingAddedToFavorite = ref("");
+
+onMounted(async () => {
+  await fetchFavorites();
+  loading.value = false;
+});
 
 async function removeLink(subName: SubName, link: Link) {
   try {
@@ -51,5 +83,20 @@ function removeLinkInUi(subName: SubName, link: Link) {
   subData.value[subName][selectedPrice.value] = subData.value[subName][
     selectedPrice.value
   ].filter((l: Link) => l !== link);
+}
+
+async function onClickHeartButton(link: Link) {
+  try {
+    isAddingToFavorite.value = true;
+    linkBeingAddedToFavorite.value = link;
+    await addFavorite(link);
+    await fetchFavorites();
+  } catch (e: unknown) {
+    if (e instanceof Error) alert(e.message);
+    alert(e);
+  } finally {
+    isAddingToFavorite.value = false;
+    linkBeingAddedToFavorite.value = "";
+  }
 }
 </script>

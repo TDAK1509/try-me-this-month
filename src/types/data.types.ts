@@ -4,6 +4,7 @@ export interface Db {
   remove: (subName: SubName, price: Price, link: Link) => Promise<void>;
 
   fetchFavorites: () => Promise<string[]>;
+  addFavorite: (link: Link) => Promise<void>;
 }
 
 export type Price = string;

@@ -26,11 +26,11 @@ const COLLECTION_FAVORITE = "favorites";
 export const db: Db = {
   add: async (sub: SubName, price: Price, link: Link) => {
     try {
-      await updateData(sub, price, link);
+      await updateSubData(sub, price, link);
     } catch (e) {
       // @ts-ignore
       if (e.message.includes("No document to update")) {
-        return addNewData(sub, price, link);
+        return addNewSubData(sub, price, link);
       }
 
       throw e;
@@ -50,15 +50,28 @@ export const db: Db = {
   },
 
   remove: async (sub: SubName, price: Price, link: Link) => {
-    const ref = getRefByDocId(sub);
+    const ref = getSubDataRefByDocId(sub);
 
     return updateDoc(ref, {
       [price]: arrayRemove(link),
     });
   },
 
+  addFavorite: async (link: Link) => {
+    try {
+      await updateFavorite(link);
+    } catch (e) {
+      // @ts-ignore
+      if (e.message.includes("No document to update")) {
+        return addNewFavorite(link);
+      }
+
+      throw e;
+    }
+  },
+
   fetchFavorites: async (): Promise<string[]> => {
-    return ["link 1", "link 2"];
+    return ["link 1", "https://t.me/c/1616359034/4518"];
     // const querySnapshot = await getDocs(collection(_db, COLLECTION_FAVORITE));
 
     // let result: SubsData = {};
@@ -71,22 +84,38 @@ export const db: Db = {
   },
 };
 
-async function addNewData(sub: SubName, price: Price, link: Link) {
-  const ref = getRefByDocId(sub);
+async function addNewSubData(sub: SubName, price: Price, link: Link) {
+  const ref = getSubDataRefByDocId(sub);
 
   return setDoc(ref, {
     [price]: [link],
   });
 }
 
-async function updateData(sub: SubName, price: Price, link: Link) {
-  const ref = getRefByDocId(sub);
+async function updateSubData(sub: SubName, price: Price, link: Link) {
+  const ref = getSubDataRefByDocId(sub);
 
   return updateDoc(ref, {
     [price]: arrayUnion(link),
   });
 }
 
-function getRefByDocId(docId: string): DocumentReference<DocumentData> {
+function getSubDataRefByDocId(docId: string): DocumentReference<DocumentData> {
   return doc(_db, COLLECTION_LINKS, docId);
+}
+
+async function addNewFavorite(favorite: Link) {
+  const ref = doc(_db, COLLECTION_FAVORITE, "favorites");
+
+  return setDoc(ref, {
+    links: [favorite],
+  });
+}
+
+async function updateFavorite(favorite: Link) {
+  const ref = doc(_db, COLLECTION_FAVORITE, "favorites");
+
+  return updateDoc(ref, {
+    links: arrayUnion(favorite),
+  });
 }
